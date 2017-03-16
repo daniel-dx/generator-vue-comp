@@ -1,9 +1,10 @@
 'use strict';
 
-var fs = require('fs');
+var fs = require('fs-extra')
 var path = require('path');
 var shell = require('shelljs');
 var child_process = require('child_process');
+var glob = require("glob");
 
 var logger = require('./logger');
 
@@ -115,8 +116,28 @@ function exec(cmd) {
   });
 };
 
+function deleteSome(path, keywords, isBlock) {
+  let haystack = fs.readFileSync(path, 'utf8');
+
+  let lines = haystack.split('\n');
+  keywords.forEach((keyword) => {
+    lines.some((line, i) => {
+      if (line.indexOf(keyword) !== -1) {
+        if(!!isBlock){
+          lines.splice(i-1,3);
+        }else{
+          lines.splice(i,1);
+        }
+        return true;
+      }
+    });
+  });
+  fs.writeFileSync(path, lines.join('\n'));
+}
+
 module.exports = {
   rewrite: rewrite,
   rewriteFile: rewriteFile,
-  exec: exec
+  exec: exec,
+  deleteSome: deleteSome
 };
