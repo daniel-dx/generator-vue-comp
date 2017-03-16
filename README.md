@@ -24,8 +24,14 @@ yo vue-comp:add-comp
 
 or add a vue directive:
 
-```
+```bash
 yo vue-comp:add-directive
+```
+
+You can delete a vue component or vue directive
+
+```bash
+yo vue-comp:delete
 ```
 
 ## Getting To Know Yeoman
